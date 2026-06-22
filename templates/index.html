@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickPDF - PDF Converter</title>
+<link rel="icon" href="static/LOGO.png">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:#09090b;
+    color:white;
+    overflow-x:hidden;
+}
+
+.bg{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:
+    radial-gradient(circle at top left,#2563eb55,transparent 35%),
+    radial-gradient(circle at bottom right,#9333ea55,transparent 35%);
+    z-index:-1;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+}
+
+.logo{
+    display:flex;
+    align-items:left;
+    gap:10px;
+    font-size:24px;
+    font-weight:700;
+}
+
+.nav-btn{
+    background:#ffffff10;
+    border:1px solid #ffffff20;
+    color:white;
+    padding:10px 18px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.hero{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:80px 20px;
+}
+
+.hero h1{
+    font-size:clamp(40px,8vw,75px);
+    max-width:900px;
+    line-height:1.1;
+}
+
+.hero p{
+    color:#a1a1aa;
+    margin-top:20px;
+    font-size:18px;
+    max-width:600px;
+}
+
+.card{
+    width:min(700px,95%);
+    margin:40px auto;
+    padding:30px;
+    border-radius:30px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+.upload{
+    border:2px dashed #3f3f46;
+    border-radius:25px;
+    padding:60px 20px;
+    text-align:center;
+    transition:.3s;
+}
+
+.upload:hover{
+    border-color:#60a5fa;
+    transform:translateY(-3px);
+}
+
+.upload h2{
+    margin-bottom:10px;
+}
+
+.upload p{
+    color:#a1a1aa;
+}
+
+.btn{
+    text-align:center;
+    text-decoration:none;
+    display:block;
+    width:100%;
+    margin-top:25px;
+    border:none;
+    border-radius:18px;
+    padding:18px;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    color:white;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+.btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+    pointer-events:none;
+}
+
+.donate-btn{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#ffffff10;
+    border:1px solid #ffffff20;
+    color:white;
+    padding:10px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    z-index:999;
+}
+
+.donate-btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+    pointer-events:none;
+}
+
+.donate-btn:hover{
+    background:#ffffff20;
+}
+
+.ad{
+    width:min(900px,95%);
+    margin:30px auto;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+    color:#71717a;
+    border:1px solid #27272a;
+}
+
+.features{
+    width:min(1100px,95%);
+    margin:80px auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.feature{
+    padding:25px;
+    border-radius:24px;
+    background:#111114;
+    border:1px solid #27272a;
+}
+
+.feature h3{
+    margin-bottom:10px;
+}
+
+.feature p{
+    color:#a1a1aa;
+}
+
+footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#71717a;
+}
+
+.info-box{
+    margin-top:15px;
+    padding:16px;
+    border-radius:16px;
+    text-align:center;
+    font-weight:600;
+    animation:slideUp .3s ease;
+}
+
+.success{
+    background:rgba(34,197,94,.15);
+    border:1px solid rgba(34,197,94,.4);
+    color:#4ade80;
+}
+
+.error{
+    background:rgba(239,68,68,.15);
+    border:1px solid rgba(239,68,68,.4);
+    color:#f87171;
+}
+
+@keyframes slideUp{    
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+
+<nav style="justify-content:left;">
+    <div class="logo">
+        <img src="static/LOGO.png" alt="Logo" width="40">
+        <span>QuickPDF</span>
+    </div>
+    <button id="donateBtn" class="donate-btn" onclick="QR('flex')">💚 Support Me</button>
+</nav>
+
+<section class="hero">
+    <h1>Convert Images to PDF Instantly</h1>
+    <p>Fast, secure and free image to PDF converter with a modern experience.</p>
+</section>
+
+<div class="ad">
+    🚀 Simple, Fast and Hassle-Free PDF Conversion
+</div>
+
+<div class="card">
+
+    <form id="uploadForm">
+
+        <div class="upload" id="uploadBox">
+            <h2>📄 Drop Images Here</h2>
+            <p id="fileText">JPG, PNG, WEBP Supported</p>
+        </div>
+
+        <input type="file" id="fileInput" name="images" multiple accept="image/*" hidden>
+
+        <div id="info"></div>
+
+        <button type="submit" id="btn" class="btn">Convert to PDF</button>
+
+    </form>
+
+</div>
+
+<div id="qrPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(5px);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+    <div style="
+    background:#111114;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    border:1px solid #27272a;">
+
+        <h3>💚 Support Me</h3>
+
+        <img src="static/QR.png"
+             width="250"
+             style="margin:15px 0; border-radius:15px;">
+
+        <br>
+
+        <button class="nav-btn" onclick="QR('none')">Close</button>
+
+    </div>
+
+</div>
+
+<script>
+    
+    const uploadForm = document.getElementById("uploadForm");
+    const donateBtn = document.getElementById("donateBtn");
+    const uploadBox = document.getElementById("uploadBox");
+    const fileInput = document.getElementById("fileInput");
+    const fileText = document.getElementById("fileText");
+    const info = document.getElementById("info");
+    const btn = document.getElementById("btn");
+    let isdwnldbtn = false; 
+    let converting = false;
+
+    function resetUI() {
+        converting = false;
+        isdwnldbtn = false;
+        info.innerHTML = "";
+        fileInput.value = "";
+        btn.disabled = false; 
+        fileInput.disabled = false;
+        donateBtn.disabled = false;
+        btn.innerHTML = "Convert to PDF";
+        fileText.innerText = "JPG, PNG, WEBP Supported";
+    }
+
+    function QR(mode){ document.getElementById("qrPopup").style.display = mode; }
+
+    uploadBox.addEventListener("click", function() { 
+        if (converting) { return; }
+        if (isdwnldbtn) { resetUI(); }
+        fileInput.click();
+    });
+
+    fileInput.addEventListener("change", function() {
+        if (this.files.length === 0) {
+            fileText.innerText = "JPG, PNG, WEBP Supported";
+        } else {
+            fileText.innerText = this.files.length + " file(s) selected";
+        }
+    });
+
+    uploadForm.addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        if (isdwnldbtn) {
+            info.innerHTML = `
+            <div class="info-box success">
+                🚀 Download Started!
+                <br>
+                <small>Thanks for using QuickPDF 💚</small>
+                <br><br>
+                <a href="#" onclick="QR('flex'); return false;">
+                ☕ Buy Me a Coffee
+                </a>
+            </div>`;
+            return;
+        }
+
+        if (fileInput.files.length === 0) {
+            info.innerHTML = `
+            <div class="info-box error">
+                Please select at least one image
+            </div>`;
+            return;
+        }
+
+        btn.innerHTML = "Converting...";
+        donateBtn.disabled = true;
+        fileInput.disabled = true;
+        btn.disabled = true;
+        info.innerHTML = "";
+        converting = true;
+
+        try {
+            const formData = new FormData();
+            for (let file of fileInput.files) {
+                formData.append("images", file);
+            }
+
+            const res = await fetch("/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data.status) {
+                resetUI();
+                isdwnldbtn = true;
+                btn.innerHTML = `Download Now`;
+                btn.onclick = function() { window.location.href = data.url; }
+                
+            } else {
+                resetUI();
+                info.innerHTML = `
+                <div class="info-box error">
+                    ${data.message}
+                </div>`;
+            }
+
+        } catch (err) {
+            resetUI();
+            info.innerHTML = `
+            <div class="info-box error">
+                Convert Failed: ${err.message || err}
+            </div>`;
+        }
+
+    });
+
+</script>
+
+<section class="features">
+
+    <div class="feature">
+        <h3>⚡ Fast</h3>
+        <p>Convert images to PDF within seconds.</p>
+    </div>
+
+    <div class="feature">
+        <h3>🔒 Secure</h3>
+        <p>Your files stay private and protected.</p>
+    </div>
+
+    <div class="feature">
+        <h3>💎 Free</h3>
+        <p>No registration required to start.</p>
+    </div>
+
+</section>
+
+<footer>
+    © 2026 QuickPDF • Built with ❤️
+</footer>
+
+</body>
+</html>
