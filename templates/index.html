@@ -254,8 +254,7 @@ footer{
 
         <div class="upload" id="uploadBox">
             <h2>📄 Drop Images Here</h2>
-            <p id="fileText">JPG, PNG, WEBP Supported</p>
-            <p>Maximum upload size: 25MB</p>
+            <p id="fileText">JPG, PNG, WEBP Supported (MAX: 20MB)</p>
         </div>
 
         <input type="file" id="fileInput" name="images" multiple accept="image/*" hidden>
@@ -324,7 +323,7 @@ z-index:9999;
         fileInput.disabled = false;
         donateBtn.disabled = false;
         btn.innerHTML = "Convert to PDF";
-        fileText.innerText = "JPG, PNG, WEBP Supported";
+        fileText.innerText = "JPG, PNG, WEBP Supported (MAX: 20MB)";
     }
 
     function QR(mode){ document.getElementById("qrPopup").style.display = mode; }
@@ -337,7 +336,7 @@ z-index:9999;
 
     fileInput.addEventListener("change", function() {
         if (this.files.length === 0) {
-            fileText.innerText = "JPG, PNG, WEBP Supported";
+            fileText.innerText = "JPG, PNG, WEBP Supported (MAX: 20MB)";
         } else {
             fileText.innerText = this.files.length + " file(s) selected";
         }

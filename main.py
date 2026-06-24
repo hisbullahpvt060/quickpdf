@@ -47,7 +47,7 @@ def upload():
 
 @app.errorhandler(413)
 def too_large(e):
-    return jsonify({"status": False, "message": "Upload size exceeds 25 MB limit"}), 413
+    return jsonify({"status": False, "message": "Upload size exceeds 20 MB limit"}), 413
 
 @app.route("/download/<job_id>")
 def download(job_id):
