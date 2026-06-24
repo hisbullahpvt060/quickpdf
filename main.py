@@ -48,5 +48,3 @@ def upload():
 def download(job_id):
     if not os.path.exists(f"outputs/{job_id}.pdf"): return f"PDF File Not Found! ({job_id})"
     return send_file(f"outputs/{job_id}.pdf",as_attachment=True)
-
-app.run(host="0.0.0.0",port=5000,debug=True)
