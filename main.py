@@ -3,6 +3,7 @@ from PIL import Image
 from flask import Flask, request, render_template, jsonify, send_file
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024
 
 red = colorama.Fore.RED
 grn = colorama.Fore.GREEN
@@ -43,6 +44,10 @@ def upload():
     except Exception as err:
         print(f"{red}Job Error! {rst}(ID: {job_id})\n{err}")
         return jsonify({"status": False, "message": str(err)}), 500
+
+@app.errorhandler(413)
+def too_large(e):
+    return jsonify({"status": False, "message": "Upload size exceeds 25 MB limit"}), 413
 
 @app.route("/download/<job_id>")
 def download(job_id):
